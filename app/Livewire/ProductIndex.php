@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Product;
 use Livewire\Attributes\On;
+use Livewire\WithPagination;
 
 class ProductIndex extends Component
 {
@@ -15,7 +16,17 @@ class ProductIndex extends Component
         'description' => 'nullable',
         'price' => 'required|numeric',
     ]; // validation rules (error-handling)
-    
+    protected $queryString = ['page'];
+
+    use WithPagination;
+    public $page = 1; // <--- important!
+
+    public function updating($name)
+    {
+        if ($name !== 'page') {
+            $this->resetPage();
+        }
+    }
     public function render()
     {
         // $data['products'] = Product::get(); // get all products
@@ -41,6 +52,11 @@ class ProductIndex extends Component
                 $this->dispatch('productSaved', message:'Product created successfully.');
         }
         $this->reset();
+        $this->dispatch('refreshProducts');
+        // return redirect(request()->header('Referer'));
+        // $this->dispatchBrowserEvent('scroll-to-product', ['id' => $this->productId]);
+        $this->dispatch('scroll-to-product', id: $this->productId);
+
     }
 
     public function edit($id){

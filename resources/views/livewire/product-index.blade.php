@@ -42,9 +42,10 @@
                     <tbody>
                         @foreach($products as $index => $pt)    {{-- loop through products --}}
                         <tr>
-                            <td class="px-2 text-center">{{ $index+1 }}</td>
+                            {{-- <td class="px-2 text-center">{{ $index+1 }}</td> --}}
+                            <td class="px-2 text-center">{{ $products->firstItem() + $loop->index }}</td>
                             <td>{{ $pt->name }}</td>
-                            <td class="px-2" style="min-width: 800px">{{ $pt->description }}</td>
+                            <td class="px-2" style="min-width: 500px">{{ $pt->description }}</td>
                             <td class="px-2 text-center">{{ $pt->price }}</td>
                             <td class="py-2 text-center">
                                 <flux:button wire:click="edit({{ $pt->id }})" icon="pencil-square" variant="primary"></flux:button>
@@ -90,4 +91,6 @@
         });
     });
 </script>
+
+
 {{-- script --}}
